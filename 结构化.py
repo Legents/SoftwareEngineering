@@ -25,7 +25,7 @@ def Sigmoid(data):
 	for a in data[2]:
 		s = 1.0/(1 + math.exp(-float(a)*1.0))
 		sigmoid.append(s)
-	data.append(sigmoid)
+	data[2] = sigmoid
 	return data
 #将处理后的数据写回文件
 def write_sig(file,data):
@@ -44,7 +44,7 @@ def combine_files(file1,file2,x):
 	data = []
 	for (s1,t1,si1) in zip(data1[0],data1[1],data1[2]):
 		j = 0
-		flag = 0
+		flag = 0	#标记是否找到相同数据
 		for (s2,t2,si2) in zip(data2[0],data2[1],data2[2]):
 			if s1 == s2 and t1 == t2:
 				flag = 1
@@ -71,9 +71,9 @@ def combine_files(file1,file2,x):
 	data.append(new_source)
 	data.append(new_target)
 	data.append(new_sigmoid)
-	s=str(x)
-	file = s+'.csv'
-	write_sig(file,data)	
+	file = str(x)+'.csv'
+	write_sig(file,data)
+	print('文件'+str(x)+'.csv已生成')	
 	return file	
 		
 def main():	
@@ -87,7 +87,6 @@ def main():
 	file.append('edge2018_1.csv')
 	for i in range(0,7):			#依次处理所有文件的数据			
 		data = Sigmoid(data_process(file[i]))
-		del data[2]
 		write_sig(file[i],data)
 	x=1
 	for i in range(0,12,2):
